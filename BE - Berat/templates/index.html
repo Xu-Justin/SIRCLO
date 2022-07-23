@@ -1,0 +1,52 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+
+{% if success %}
+<div class="alert alert-success" role="alert">
+    {{ success }}
+</div>
+{% endif %}
+
+<table class="table">
+
+    <thead>
+        <tr>
+            <th>Tanggal</th>
+            <th>Max</th>
+            <th>Min</th>
+            <th>Perbedaan</th>
+            <th></th>
+        </tr>
+    </thead>
+
+    <tbody>
+
+        {% for berat in berats %}
+        <tr>
+            <td>{{ berat.get_tanggal() }}</td>
+            <td>{{ berat.get_berat_max() }}</td>
+            <td>{{ berat.get_berat_min() }}</td>
+            <td>{{ berat.get_perbedaan() }}</td>
+            <td>
+                <div class="d-flex flex-row">
+                    <form action="{{ url_for('berat_bp.update_form', tgl=berat.get_tanggal()) }}" method="GET">
+                        <button type="submit" class="btn btn-warning mx-3" style="width: 8rem;" name="id" value="">Edit</button>
+                    </form>
+                    <form action="{{ url_for('berat_bp.delete') }}" method="POST">
+                        <button type="submit" class="btn btn-danger mx-3" style="width: 8rem;" name="tanggal" value="{{ berat.get_tanggal() }}">Delete</button>
+                    </form>
+                </div>
+            </td>
+        </tr>
+        {% endfor %}
+
+
+    </tbody>
+</table>
+
+<form action="{{ url_for('berat_bp.add_form') }}" method="GET">
+    <button type="submit" class="btn btn-primary mx-3" style="width: 8rem;">Add</button>
+</form>
+
+{% endblock %}

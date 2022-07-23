@@ -1,0 +1,43 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+
+<form action="{{ url_for('berat_bp.update', tgl=tgl) if action == 'update' else url_for('berat_bp.add') }}" method="POST" class="">
+
+    <div class="form-group m-3 d-flex flex-row">
+        <label for="tanggal" style="width: 10rem;">Tanggal</label>
+        <input type="date" class="form-control" style="width: 10rem;" name="tanggal" value="{{ tanggal }}" required>
+        {% if error_tanggal %}
+        <div id="" class="text-danger mx-3" style="width: 30rem;">
+            {{ error_tanggal }}
+        </div>
+        {% endif %}
+    </div>
+    
+    <div class="form-group m-3 d-flex flex-row">
+        <label for="berat-max" style="width: 10rem;">Berat Max</label>
+        <input type="text" class="form-control" style="width: 10rem;" name="berat-max" id="berat-max" value="{{ berat_max }}" required>
+        {% if error_berat_max %}
+        <div id="" class="text-danger mx-3" style="width: 30rem;">
+            {{ error_berat_max }}
+        </div>
+        {% endif %}
+    </div>
+
+    <div class="form-group m-3 d-flex flex-row">
+        <label for="berat-min" style="width: 10rem;">Berat Min</label>
+        <input type="text" class="form-control" style="width: 10rem;" name="berat-min" value="{{ berat_min }}" required>
+        {% if error_berat_min %}
+        <div id="" class="text-danger mx-3" style="width: 30rem;">
+            {{ error_berat_min }}
+        </div>
+        {% endif %}
+    </div>
+
+    <div>
+        <button type="submit" class="btn btn-primary" style="width: 8rem;">Submit</button>
+    </div>
+
+</form>
+
+{% endblock %}
