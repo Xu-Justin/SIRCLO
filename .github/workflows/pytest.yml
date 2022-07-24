@@ -8,7 +8,8 @@ permissions:
   contents: read
 
 defaults:
-  working-directory: ./BE\ -\ Berat/
+  run:
+    working-directory: ./BE\ -\ Berat/
 
 jobs:
   build:
