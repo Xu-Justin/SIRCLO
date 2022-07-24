@@ -9,7 +9,7 @@ permissions:
 
 defaults:
   run:
-    working-directory: BE\ -\ Berat/
+    working-directory: BE - Berat/
 
 jobs:
   build:
