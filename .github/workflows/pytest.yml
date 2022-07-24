@@ -7,6 +7,9 @@ on:
 permissions:
   contents: read
 
+defaults:
+  working-directory: ./BE\ -\ Berat/
+
 jobs:
   build:
 
@@ -21,9 +24,8 @@ jobs:
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
-        pip install -r BE\ -\ Berat/requirements.txt
+        pip install -r requirements.txt
       
     - name: Test with pytest
       run: |
-        pwd
         python3 -m pytest -v
