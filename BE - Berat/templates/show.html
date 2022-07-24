@@ -8,25 +8,29 @@
 
         <tr>
             <td>Tanggal</td>
-            <td>dd-mm-yyyy</td>
+            <td>{{ berat.get_tanggal() }}</td>
         </tr>
 
         <tr>
             <td>Max</td>
-            <td>0</td>
+            <td>{{ berat.get_berat_max() }}</td>
         </tr>
 
         <tr>
             <td>Min</td>
-            <td>0</td>
+            <td>{{ berat.get_berat_min() }}</td>
         </tr>
 
         <tr>
             <td>Perbedaan</td>
-            <td>0</td>
+            <td>{{ berat.get_perbedaan() }}</td>
         </tr>
 
     </tbody>
 </table>
+
+<form action="{{ url_for('berat_bp.index') }}" method="GET">
+    <button type="submit" class="btn btn-primary mx-3" style="width: 8rem;">Back</button>
+</form>
 
 {% endblock %}

@@ -10,8 +10,9 @@ def index():
     args = request.args
     return render_template('index.html', berats=berats, **args)
 
-def show(tanggal):
-    return render_template('show.html')
+def show(tgl):
+    berat = Berat.query.filter(Berat.tanggal == tgl).first()
+    return render_template('show.html', berat=berat)
 
 def add_form():
     args = request.args
