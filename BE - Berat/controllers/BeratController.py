@@ -12,6 +12,7 @@ def index():
 
 def show(tgl):
     berat = Berat.query.filter(Berat.tanggal == tgl).first()
+    if not berat: return '', 404
     return render_template('show.html', berat=berat)
 
 def add_form():
@@ -23,7 +24,7 @@ def add():
     berat_min = request.form.get('berat-min', None)
     berat_max = request.form.get('berat-max', None)
     
-    (tanggal, berat_min, berat_max), (messages, valid) = validate_form(tanggal, berat_min, berat_max)
+    (tanggal, berat_min, berat_max), (messages, valid), _ = validate_form(tanggal, berat_min, berat_max)
     
     if valid['tanggal'] and Berat.query.filter(Berat.tanggal == tanggal).first():
         messages['error_tanggal'] = f'Tanggal sudah terdapat pada database.'
@@ -44,6 +45,7 @@ def update_form(tgl):
     args = dict(request.args)
     if 'tanggal' not in args and 'berat_min' not in args and 'berat_max' not in args:
         berat = Berat.query.filter(Berat.tanggal == tgl).first()
+        if not berat: return '', 404
         args['tanggal'] = berat.get_tanggal()
         args['berat_min'] = berat.get_berat_min()
         args['berat_max'] = berat.get_berat_max()    
@@ -54,17 +56,17 @@ def update(tgl):
     berat_min = request.form.get('berat-min', None)
     berat_max = request.form.get('berat-max', None)
     
-    (tanggal, berat_min, berat_max), (messages, valid) = validate_form(tanggal, berat_min, berat_max)
+    (tanggal, berat_min, berat_max), (messages, valid), _ = validate_form(tanggal, berat_min, berat_max)
     
     if valid['tanggal'] and Berat.query.filter(Berat.tanggal == tanggal).first() and str(tanggal) != tgl:
         messages['error_tanggal'] = f'Tanggal sudah terdapat pada database.'
         valid['tanggal'] = False
     
-        
     if not (valid['tanggal'] and valid['berat_min'] and valid['berat_max']):
         return redirect(url_for('berat_bp.update_form', tgl=tgl, tanggal=tanggal, berat_min=berat_min, berat_max=berat_max, **messages))
     
     berat = db.session.query(Berat).filter(Berat.tanggal == tgl).first()
+    if not berat: return '', 404
     berat.set_tanggal(tanggal)
     berat.set_berat_min(berat_min)
     berat.set_berat_max(berat_max)
@@ -107,6 +109,8 @@ def validate_berat(berat):
         status = True
     except:
         status = False
+    if status and berat < 0:
+        status = False
     return berat, status
 
 def validate_form(tanggal, berat_min, berat_max):
@@ -126,4 +130,8 @@ def validate_form(tanggal, berat_min, berat_max):
         messages['error_berat_min'] = messages['error_berat_max'] = f'Berat max harus lebih besar atau sama dengan berat min.'
         valid['berat_min'] = valid['berat_max'] = False
     
-    return (tanggal, berat_min, berat_max), (messages, valid)
+    status = True
+    for _, s in valid.items():
+        if not s: status = False
+    
+    return (tanggal, berat_min, berat_max), (messages, valid), status
