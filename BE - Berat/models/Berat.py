@@ -33,6 +33,3 @@ class Berat(db.Model):
     
     def get_perbedaan(self):
         return self.get_berat_max() - self.get_berat_min()
-        
-def get_all():
-    return Berat.query.all()
